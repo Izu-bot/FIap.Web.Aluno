@@ -1,4 +1,5 @@
 using FIap.Web.Aluno.Data;
+using FIap.Web.Aluno.Logging;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,11 +12,13 @@ var connectionString = builder.Configuration.GetConnectionString("DatabaseConnec
 builder.Services.AddDbContext<DataBaseContext>(
 
     opt => opt.UseOracle(connectionString).EnableSensitiveDataLogging(true)
-
 );
 
 #endregion
-    
+#region Registro IServiceColletion
+builder.Services.AddSingleton<ICustomLogger, MockLogger>();
+#endregion
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
