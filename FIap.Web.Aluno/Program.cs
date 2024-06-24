@@ -1,8 +1,13 @@
 using AutoMapper;
+using Fiap.Web.Aluno.Data.Repository;
 using Fiap.Web.Aluno.Models;
-using Fiap.Web.Alunos.ViewModels;
+using Fiap.Web.Aluno.Services;
+using Fiap.Web.Aluno.ViewModels;
+using Fiap.Web.Alunos.Services;
 using FIap.Web.Aluno.Data;
+using FIap.Web.Aluno.Data.Repository;
 using FIap.Web.Aluno.Logging;
+using FIap.Web.Aluno.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -21,6 +26,12 @@ builder.Services.AddDbContext<DataBaseContext>(
 
 #region Registro IServiceColletion
 builder.Services.AddSingleton<ICustomLogger, MockLogger>();
+
+builder.Services.AddScoped<IClienteRepository, ClienteRepository>();
+builder.Services.AddScoped<IClienteService, ClienteService>();
+
+builder.Services.AddScoped<IRepresentanteRepository, RepresentanteRepository>();
+builder.Services.AddScoped<IRepresentanteService, RepresentanteService>();
 #endregion
 
 #region AutoMapper

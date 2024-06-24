@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc.Rendering;
-namespace Fiap.Web.Alunos.ViewModels
+namespace Fiap.Web.Aluno.ViewModels
 {
     public class ClienteCreateViewModel
     {

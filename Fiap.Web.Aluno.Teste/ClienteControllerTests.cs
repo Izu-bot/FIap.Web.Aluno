@@ -1,5 +1,5 @@
 ﻿using Fiap.Web.Aluno.Models;
-using Fiap.Web.Alunos.Controllers;
+using Fiap.Web.Aluno.Controllers;
 using FIap.Web.Aluno.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
