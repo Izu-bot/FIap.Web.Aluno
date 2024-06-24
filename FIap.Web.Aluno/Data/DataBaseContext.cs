@@ -8,13 +8,13 @@ namespace FIap.Web.Aluno.Data
     {
         #region Propriedades para manipular as entidades
 
-        public DbSet<RepresentanteModel> Representantes { get; set; }
-        public DbSet<ClienteModel> Cliente { get; set; }
-        public DbSet<ProdutoModel> Produtos { get; set; }
-        public DbSet<LojaModel> Loja { get; set; }
-        public DbSet<PedidoModel> Pedidos { get; set; }
-        public DbSet<FornecerdorModel> Fornecedor { get; set; }
-        public DbSet<PedidoProdutoModel> PedidoProduto { get; set; }
+        public virtual DbSet<RepresentanteModel> Representantes { get; set; }
+        public virtual DbSet<ClienteModel> Cliente { get; set; }
+        public virtual DbSet<ProdutoModel> Produtos { get; set; }
+        public virtual DbSet<LojaModel> Loja { get; set; }
+        public virtual DbSet<PedidoModel> Pedidos { get; set; }
+        public virtual DbSet<FornecerdorModel> Fornecedor { get; set; }
+        public virtual DbSet<PedidoProdutoModel> PedidoProduto { get; set; }
 
         #endregion
 
