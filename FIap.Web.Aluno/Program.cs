@@ -1,3 +1,6 @@
+using AutoMapper;
+using Fiap.Web.Aluno.Models;
+using Fiap.Web.Alunos.ViewModels;
 using FIap.Web.Aluno.Data;
 using FIap.Web.Aluno.Logging;
 using Microsoft.EntityFrameworkCore;
@@ -15,8 +18,35 @@ builder.Services.AddDbContext<DataBaseContext>(
 );
 
 #endregion
+
 #region Registro IServiceColletion
 builder.Services.AddSingleton<ICustomLogger, MockLogger>();
+#endregion
+
+#region AutoMapper
+
+// Configuração do AutoMapper
+var mapperConfig = new AutoMapper.MapperConfiguration(c =>
+{
+    // Permite que coleções nulas sejam mapeadas
+    c.AllowNullCollections = true;
+
+    // Permite que valores de destino nulos sejam mapeados
+    c.AllowNullDestinationValues = true;
+
+    // Define o mapeamento de ClienteModel para ClienteCreateViewModel
+    c.CreateMap<ClienteModel, ClienteCreateViewModel>();
+
+    // Define o mapeamento de ClienteCreateViewModel para ClienteModel
+    c.CreateMap<ClienteCreateViewModel, ClienteModel>();
+
+});
+
+// Cria o mapper com base na configuração definida
+IMapper mapper = mapperConfig.CreateMapper();
+
+// Registra o IMapper como um serviço singleton no container DI do ASP.NET Core
+builder.Services.AddSingleton(mapper);
 #endregion
 
 var app = builder.Build();

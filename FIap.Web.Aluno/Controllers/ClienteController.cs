@@ -1,4 +1,6 @@
-﻿using Fiap.Web.Aluno.Models;
+﻿using AutoMapper;
+using Fiap.Web.Aluno.Models;
+using Fiap.Web.Alunos.ViewModels;
 using FIap.Web.Aluno.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -8,9 +10,12 @@ namespace Fiap.Web.Alunos.Controllers
     public class ClienteController : Controller
     {
         private readonly DataBaseContext _context;
-        public ClienteController(DataBaseContext context)
+
+        private readonly IMapper _mapper;
+        public ClienteController(DataBaseContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
         public IActionResult Index()
         {
@@ -21,21 +26,36 @@ namespace Fiap.Web.Alunos.Controllers
         [HttpGet]
         public IActionResult Create()
         {
-            ViewBag.Representantes =
-                new SelectList(_context.Representantes.ToList()
-                                , "RepresentanteId"
-                                , "NomeRepresentante");
-            return View();
+            var viewModel = new ClienteCreateViewModel
+            {
+                Representantes = new SelectList(_context.Representantes.ToList(), "RepresentanteId", "NomeRepresentante")
+            };
+            return View(viewModel);
         }
-        // Anotação de uso do Verb HTTP Post
+
         [HttpPost]
-        public IActionResult Create(ClienteModel clienteModel)
+        public IActionResult Create(ClienteCreateViewModel viewModel)
         {
-            _context.Cliente.Add(clienteModel);
-            _context.SaveChanges();
-            TempData["mensagemSucesso"] = $"O cliente {clienteModel.Nome} foi cadastrado com sucesso";
-            return RedirectToAction(nameof(Index));
+            // Verifica se todos os dados enviados estão válidos conforme as regras definidas no ViewModel
+            if (ModelState.IsValid)
+            {
+                // Transformando o ViewModel em Model
+                var cliente = _mapper.Map<ClienteModel>(viewModel);
+
+                _context.Cliente.Add(cliente);
+                _context.SaveChanges();
+                TempData["mensagemSucesso"] = $"O cliente {viewModel.Nome} foi cadastrado com sucesso";
+                return RedirectToAction(nameof(Index));
+            }
+            else
+            {
+                // Se os dados não estão válidos, recarrega a lista de representantes para a seleção na View
+                viewModel.Representantes = new SelectList(_context.Representantes.ToList(), "RepresentanteId", "NomeRepresentante", viewModel.RepresentanteId);
+                // Retorna a View com o ViewModel contendo os dados submetidos e os erros de validação
+                return View(viewModel);
+            }
         }
+
         // Anotação de uso do Verb HTTP Get
         [HttpGet]
         public IActionResult Details(int id)
